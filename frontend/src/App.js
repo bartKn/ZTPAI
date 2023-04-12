@@ -3,15 +3,17 @@ import Layout from "./components/Layout";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
 import Main from "./components/Main";
+import Friends from "./components/Friends";
 
 
 function App() {
     return (
        <Routes>
-           <Route path="/" element={<Layout/>}>
-               <Route path="/" element={<Main/>}/>
-               <Route path="login" element={<Login/>}/>
-               <Route path="profile" element={<Profile/>}/>
+           <Route path="/" element={<Layout />}>
+               <Route path="/" element={<Main />} />
+               <Route path="login" element={<Login />} />
+               <Route path="profile" element={<Profile />} />
+               <Route path="friends" element={<Friends />} />
            </Route>
        </Routes>
     )

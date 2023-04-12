@@ -1,15 +1,15 @@
 import NavBar from "./NavBar";
 
-const Home = () => {
+const Friends = () => {
     return (
         <>
             <NavBar />
             <section>
                 <br />
-                <div>Profile</div>
+                <div>Friends</div>
             </section>
         </>
     );
 }
 
-export default Home;
+export default Friends;
