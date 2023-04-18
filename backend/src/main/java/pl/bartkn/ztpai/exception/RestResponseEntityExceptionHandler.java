@@ -1,5 +1,6 @@
 package pl.bartkn.ztpai.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value =
             {EmailOrUsernameTakenException.class})
     protected ResponseEntity<Object> handleEmailOrUsernameTakenException (
-            RuntimeException ex, WebRequest request) {
+            RuntimeException ex, WebRequest request
+    ) {
         String body = "Username or email taken";
         return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
@@ -22,8 +24,27 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value =
             {UserNotFoundException.class})
     protected ResponseEntity<Object> handleUserNotFoundException (
-            RuntimeException ex, WebRequest request) {
+            RuntimeException ex, WebRequest request
+    ) {
         String body = "User not found";
         return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(value =
+            {TokenNotFoundException.class})
+    protected ResponseEntity<Object> handleTokenNotFoundException (
+            RuntimeException ex, WebRequest request
+    ) {
+        String body = "Token not found";
+        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value =
+            {ExpiredJwtException.class})
+    protected ResponseEntity<Object> handleExpiredTokenException (
+            RuntimeException ex, WebRequest request
+    ) {
+        String body = "Token is expired";
+        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }
 }
