@@ -1,21 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     MDBContainer,
-    MDBTabs,
-    MDBTabsItem,
-    MDBTabsLink,
-    MDBTabsContent,
-    MDBTabsPane,
     MDBBtn,
-    MDBIcon,
     MDBInput,
     MDBCheckbox
 }
     from 'mdb-react-ui-kit';
 import axios from "../api/axios";
-import useAuth from "../hooks/useAuth";
-
 
 const REGISTER_URL = '/register';
 
@@ -24,96 +16,135 @@ const PASS_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 function Register() {
-
-    const { setAuth } = useAuth();
-
     const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
 
-    const[username, setUsername] = useState('');
-    const[validUsername, setValidUsername] = useState(false);
+    const[formValue, setFormValue] = useState({
+       username: '',
+       password: '',
+       matchPassword: '',
+       email: '',
+    });
 
-    const[password, setPassword] = useState('');
-    const[matchPassword, setMatchPassword] = useState('');
-    const[validPassword, setValidPassword] = useState(false);
-    const[validMatch, setValidMatch] = useState(false);
-
-    const[email, setEmail] = useState('');
-    const[validEmail, setValidEmail] = useState(false);
+    const[validData, setValidData] = useState({
+       username: false,
+       password: false,
+       matchPassword: false,
+       email: false,
+    });
 
     const[errMsg, setErrMsg] = useState('');
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleCheckboxChange = (e) => {
+        setIsChecked(e.target.checked);
+    };
+
+    const onChange = (e) => {
+        setFormValue({...formValue, [e.target.name]: e.target.value})
+    }
 
     useEffect(() => {
-        const result = USER_REGEX.test(username);
-        setValidUsername(result);
-    }, [username]);
+        const usernameTest = USER_REGEX.test(formValue.username);
+        const emailTest = EMAIL_REGEX.test(formValue.email);
+        const passwordTest = PASS_REGEX.test(formValue.password);
+        const matchTest = formValue.password === formValue.matchPassword;
 
-    useEffect(() => {
-        const result = PASS_REGEX.test(password);
-        setValidPassword(result);
-        const match = password === matchPassword;
-        setValidMatch(match);
-    }, [password, matchPassword]);
-
-    useEffect(() => {
-        const result = EMAIL_REGEX.test(email);
-        console.log(email);
-        console.log(result);
-        setValidEmail(result);
-    }, [email]);
-
+        setValidData({
+            username: usernameTest,
+            email: emailTest,
+            password: passwordTest,
+            matchPassword: matchTest
+        });
+    }, [formValue.username, formValue.email, formValue.password, formValue.matchPassword])
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        console.log(username);
-        console.log(email);
-        console.log(password);
-        console.log(matchPassword);
+        try {
+            await axios.post(REGISTER_URL,
+                JSON.stringify({
+                    email: formValue.email,
+                    username: formValue.username,
+                    password: formValue.password
+                }),
+                {
+                    headers: {'Content-Type' : 'application/json'},
+                    withCredentials: true
+                });
+            navigate('/login', { replace: true, state: {msg: 'You can log in now!'}});
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg('No server response');
+            } else if (err.response.status === 409) {
+                setErrMsg(err.response?.data)
+            } else {
+                setErrMsg('Register failed');
+            }
+        }
     }
 
     return (
         <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
+            <div className="text-center mb-3 ">
+                <p className='fs-3 fw-bold'>Sign up:</p>
+            </div>
+            <p className={ !errMsg ? "d-none" : "text-center mb-3 fs-3 fw-bold"}>
+                {errMsg}
+            </p>
+            <MDBInput wrapperClass='mb-0'
+                      label='Username'
+                      id='form1'
+                      type='text'
+                      name='username'
+                      onChange={onChange}
+            />
+            <span id='text' className={ validData.username ? 'd-none' : 'form-text mt-0' } >
+                    Username must begin with letter and have at least 4 chars.
+            </span>
 
-            <MDBTabsContent>
+            <MDBInput wrapperClass='mb-0 mt-4'
+                      label='Email'
+                      id='form1'
+                      type='email'
+                      name='email'
+                      onChange={onChange}
+            />
+            <span id='text' className={ validData.email ? 'd-none' : 'form-text mt-0' } >
+                    Provide correct email.
+            </span>
 
-                <div className="text-center mb-3">
-                    <p>Sign up:</p>
-                </div>
+            <MDBInput wrapperClass='mb-0 mt-4'
+                      label='Password'
+                      id='form1'
+                      type='password'
+                      name='password'
+                      onChange={onChange}
+            />
+            <span id='text' className={ validData.password ? 'd-none' : 'form-text mt-0' } >
+                    Passwords should have at least 8 chars, contain big letter, number and special char.
+            </span>
 
-                <MDBInput wrapperClass='mb-4'
-                          label='Username'
-                          id='form1'
-                          type='text'
-                          onChange={(e) => setUsername(e.target.value)}
-                />
-                <MDBInput wrapperClass='mb-4'
-                          label='Email'
-                          id='form1'
-                          type='email'
-                          onChange={(e) => setEmail(e.target.value)}
-                />
-                <MDBInput wrapperClass='mb-4'
-                          label='Password'
-                          id='form1'
-                          type='password'
-                          onChange={(e) => setPassword(e.target.value)}
-                />
-                <MDBInput wrapperClass='mb-4'
-                          label='Confirm password'
-                          id='form1'
-                          type='password'
-                          onChange={(e) => setMatchPassword(e.target.value)}
-                />
+            <MDBInput wrapperClass='mb-0 mt-4'
+                      label='Confirm password'
+                      id='form1'
+                      type='password'
+                      name='matchPassword'
+                      onChange={onChange}
+            />
+            <span id='text' className={ validData.matchPassword ? 'd-none' : 'form-text mt-0' } >
+                    Passwords are not equal!
+            </span>
 
-                <div className='d-flex justify-content-center mb-4'>
-                    <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='I have read and agree to the terms' />
-                </div>
+            <div className='d-flex justify-content-center mb-4 mt-4'>
+                <MDBCheckbox name='flexCheck' id='flexCheckDefault'
+                             label='I have read and agree to the terms'
+                             checked={isChecked}
+                             onChange={handleCheckboxChange} />
+            </div>
 
-                <MDBBtn className="mb-4 w-100" onClick={handleRegister}>Sign up</MDBBtn>
-
-            </MDBTabsContent>
-
+            <MDBBtn className={validData.username && validData.email && validData.password
+                               && validData.matchPassword && isChecked ? "w-100" : "disabled"}
+                    onClick={handleRegister}>Sign up</MDBBtn>
+            <p className="text-center mt-1">Already have an account? <Link to='/login'>Log in here!</Link></p>
         </MDBContainer>
     );
 }
