@@ -14,23 +14,24 @@ public class AuthController {
 
     private final UserAuthService userAuthService;
 
-    @PostMapping("/login")
+    @PostMapping("/api/auth/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest userCredentials) {
         return ResponseEntity.ok().body(userAuthService.login(userCredentials));
     }
 
-    @PostMapping("/register")
+    @PostMapping("/api/auth/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest userCredentials) {
         userAuthService.register(userCredentials);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/api/auth/logout")
     public void logout(@RequestHeader(name = "Authorization") String token) {
+        System.out.println(token);
         userAuthService.logout(token);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/api/auth/delete")
     public void deleteAccount(@RequestHeader(name = "Authorization") String token) {
         userAuthService.delete(token);
     }

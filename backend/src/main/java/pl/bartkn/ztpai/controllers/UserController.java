@@ -20,23 +20,23 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping("/api/users")
     public List<UserInfo> getUsers(@RequestParam Optional<String> username) {
         return userService.getAllUsers(username);
     }
 
-    @GetMapping("/users/{username}")
+    @GetMapping("/api/users/{username}")
     public User getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
 
-    @GetMapping("/users/friends")
+    @GetMapping("/api/users/friends")
     public Set<User> getFriends() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userService.findUserFriends(email);
     }
 
-    @PostMapping("/users/friends/add")
+    @PostMapping("/api/users/friends/add")
     public ResponseEntity<?> addFriend(@RequestBody @Valid UserId id) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.addFriend(email, id.getId());

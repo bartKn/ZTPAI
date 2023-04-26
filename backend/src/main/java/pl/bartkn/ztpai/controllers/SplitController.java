@@ -14,25 +14,19 @@ public class SplitController {
 
     private final SplitService splitService;
 
-    @PostMapping("/split/new")
+    @PostMapping("/api/split/new")
     public ResponseEntity<?> createSplit(@RequestBody UserContributionWrapper userContributions) {
         System.out.println(userContributions);
         splitService.createSplit(userContributions.getUserContribution());
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/split")
-    public ResponseEntity<?> createSplit(@RequestBody UserContribution userContributions) {
-        System.out.println(userContributions);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/split/addUser")
+    @PostMapping("/api/split/addUser")
     public void addToSplit(UserContribution userContribution, Long splitId) {
         splitService.addUserToSplit(userContribution, splitId);
     }
 
-    @GetMapping("/split/result/{splitId}")
+    @GetMapping("/api/split/result/{splitId}")
     public ResponseEntity<SplitResults> getSplitResult(@PathVariable Long splitId) {
         return ResponseEntity.ok().body(splitService.calculateResult(splitId));
     }

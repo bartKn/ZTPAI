@@ -14,7 +14,7 @@ public class TokenController {
 
     private final TokenService tokenService;
 
-    @GetMapping("/token/refresh")
+    @GetMapping("/api/token/refresh")
     public ResponseEntity<RefreshResponse> refreshToken(@RequestBody String refreshToken) {
         return ResponseEntity.ok().body(tokenService.refresh(refreshToken));
     }
