@@ -26,11 +26,6 @@ function App() {
                    <Route path="friends" element={<Friends />} />
                </Route>
 
-               <Route element={<RequireAuth allowedRoles={['ROLE_USER', 'ROLE_ADMIN']} /> } >
-                   <Route path="profile" element={<Profile />} />
-               </Route>
-
-
            </Route>
        </Routes>
     )
