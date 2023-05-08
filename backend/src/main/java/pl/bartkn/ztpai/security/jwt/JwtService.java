@@ -19,7 +19,7 @@ import java.util.function.Function;
 public class JwtService {
 
     private final String SECRET_KEY = "50655368566D597133743677397A24432646294A404E635166546A576E5A7234";
-    private final int LIFESPAN = 1000 * 60 * 60 * 24; // 60 seconds * 60 * 24
+    private final int LIFESPAN = 1000 * 60;// * 60 * 24; // 60 seconds * 60 * 24
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -58,7 +58,7 @@ public class JwtService {
 
     public RefreshToken generateRefreshToken(UserDetails userDetails) {
         Date creationTime = new Date(System.currentTimeMillis());
-        Date expiryTime = new Date(System.currentTimeMillis() + LIFESPAN * 3);
+        Date expiryTime = new Date(System.currentTimeMillis() + LIFESPAN * 5);
         String token = generateToken(new HashMap<>(), userDetails, creationTime, expiryTime);
         return RefreshToken
                 .builder()

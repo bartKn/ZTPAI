@@ -2,10 +2,12 @@ package pl.bartkn.ztpai.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.bartkn.ztpai.model.dto.request.LoginRequest;
 import pl.bartkn.ztpai.model.dto.request.RegisterRequest;
 import pl.bartkn.ztpai.model.dto.response.AuthResponse;
+import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.service.UserAuthService;
 
 @RestController
@@ -26,13 +28,14 @@ public class AuthController {
     }
 
     @GetMapping("/api/auth/logout")
-    public void logout(@RequestHeader(name = "Authorization") String token) {
-        System.out.println(token);
-        userAuthService.logout(token);
+    public void logout() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userAuthService.logout(user);
     }
 
     @DeleteMapping("/api/auth/delete")
-    public void deleteAccount(@RequestHeader(name = "Authorization") String token) {
-        userAuthService.delete(token);
+    public void deleteAccount() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userAuthService.delete(user);
     }
 }

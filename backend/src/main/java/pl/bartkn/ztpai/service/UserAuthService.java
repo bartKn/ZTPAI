@@ -67,17 +67,11 @@ public class UserAuthService {
         userRepository.save(user);
     }
 
-    public void logout(String token) {
-        tokenRepository.deleteByToken(token);
+    public void logout(User user) {
+        tokenRepository.deleteByUser(user);
     }
 
-    public void delete(String token) {
-        User user = getUserFromToken(token);
+    public void delete(User user) {
         userRepository.delete(user);
-    }
-
-    private User getUserFromToken(String token) {
-        String email = jwtService.extractUsername(token);
-        return userRepository.getUserByEmail(email);
     }
 }
