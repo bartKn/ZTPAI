@@ -10,7 +10,7 @@ const AxiosProvider = ({ children }) => {
     const authContext = useContext(AuthContext);
 
     const authAxios = axios.create({
-        baseURL: 'http://localhost:8080/api/auth'
+        baseURL: 'http://localhost:8080/api/'
     });
 
     const publicAxios = axios.create({
@@ -29,6 +29,46 @@ const AxiosProvider = ({ children }) => {
         }
     );
 
+    // authAxios.interceptors.response.use(
+    //     (response) => response,
+    //     async (error) => {
+    //         const config = error?.config;
+    //
+    //         if (error?.response?.status === 403 && !config?.sent) {
+    //             config.sent = true;
+    //
+    //             const data = {
+    //                 refreshToken: authContext.auth.refreshToken,
+    //             };
+    //
+    //             const options = {
+    //                 method: 'POST',
+    //                 data,
+    //                 url: 'http://localhost:8080/api/token/refresh'
+    //             };
+    //
+    //
+    //             const response = await axios(options);
+    //             console.log(response.data)
+    //
+    //             config.headers.Authorization = `Bearer ${response.data.token}`;
+    //             authContext.setAuth({
+    //                 ...authContext.auth,
+    //                 accessToken: response.data.token,
+    //             });
+    //
+    //             return axios(config);
+    //         }
+    //         authContext.setAuth({
+    //             accessToken: null,
+    //             refreshToken: null,
+    //             authenticated: false,
+    //             roles: []
+    //         });
+    //         return Promise.reject(error);
+    //     }
+    // )
+
     const refreshAuthLogic = failedRequest => {
         const data = {
             refreshToken: authContext.auth.refreshToken,
@@ -39,7 +79,6 @@ const AxiosProvider = ({ children }) => {
             data,
             url: 'http://localhost:8080/api/token/refresh'
         };
-
         return axios(options)
             .then(async tokenRefreshResponse => {
                 failedRequest.response.config.headers.Authorization =

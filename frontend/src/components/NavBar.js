@@ -14,7 +14,7 @@ import AuthContext from "../context/AuthProvider";
 import {NavLink, useNavigate} from "react-router-dom";
 import {AxiosContext} from "../context/AxiosProvider";
 
-const LOGOUT_URL = '/logout';
+const LOGOUT_URL = '/auth/logout';
 
 const NavBar = () => {
     const [showNavColor, setShowNavColor] = useState(false);
