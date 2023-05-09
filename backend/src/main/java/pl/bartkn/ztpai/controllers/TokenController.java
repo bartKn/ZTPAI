@@ -2,7 +2,7 @@ package pl.bartkn.ztpai.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.bartkn.ztpai.model.dto.response.RefreshResponse;
@@ -14,8 +14,9 @@ public class TokenController {
 
     private final TokenService tokenService;
 
-    @GetMapping("/api/token/refresh")
+    @PostMapping("/api/token/refresh")
     public ResponseEntity<RefreshResponse> refreshToken(@RequestBody String refreshToken) {
+        System.out.println("Refreshing");
         return ResponseEntity.ok().body(tokenService.refresh(refreshToken));
     }
 }

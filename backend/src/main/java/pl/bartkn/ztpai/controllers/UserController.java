@@ -6,10 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.bartkn.ztpai.model.dto.request.UserId;
+import pl.bartkn.ztpai.model.dto.response.UserAccountDetails;
 import pl.bartkn.ztpai.model.dto.response.UserInfo;
 import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.service.UserService;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -19,6 +21,30 @@ import java.util.Set;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/api/user/details")
+    public UserAccountDetails getUserDetails() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userService.getUserDetails(user);
+    }
+
+    @PatchMapping("/api/user/username")
+    public UserAccountDetails updateUsername(@RequestBody String username) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userService.updateUsername(user, username);
+    }
+
+    @PatchMapping("/api/user/email")
+    public UserAccountDetails updateEmail(@RequestBody String email) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userService.updateEmail(user, email);
+    }
+
+    @PatchMapping("/api/user/balance")
+    public UserAccountDetails updateUsername(@RequestBody BigDecimal balance) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userService.updateBalance(user, balance);
+    }
 
     @GetMapping("/api/users")
     public List<UserInfo> getUsers(@RequestParam Optional<String> username) {

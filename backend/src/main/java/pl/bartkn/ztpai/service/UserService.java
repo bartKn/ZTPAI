@@ -2,12 +2,15 @@ package pl.bartkn.ztpai.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.bartkn.ztpai.exception.EmailOrUsernameTakenException;
 import pl.bartkn.ztpai.exception.UserNotFoundException;
+import pl.bartkn.ztpai.model.dto.response.UserAccountDetails;
 import pl.bartkn.ztpai.model.dto.response.UserInfo;
 import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.model.mapper.UserMapper;
 import pl.bartkn.ztpai.repository.UserRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -47,5 +50,38 @@ public class UserService {
         friend.getFriends().add(user);
         userRepository.save(user);
         userRepository.save(friend);
+    }
+
+    public UserAccountDetails getUserDetails(User user) {
+        return UserAccountDetails.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .balance(user.getBalance())
+                .build();
+    }
+
+    public UserAccountDetails updateEmail(User user, String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new EmailOrUsernameTakenException("Email is taken!");
+        }
+        user.setEmail(email);
+        userRepository.save(user);
+        return getUserDetails(user);
+    }
+
+    public UserAccountDetails updateUsername(User user, String username) {
+        if (userRepository.existsByUsername(username)) {
+            throw new EmailOrUsernameTakenException("Username is taken!");
+        }
+        user.setUsername(username);
+        userRepository.save(user);
+        return getUserDetails(user);
+    }
+
+    public UserAccountDetails updateBalance(User user, BigDecimal balance) {
+        user.setBalance(user.getBalance().add(balance));
+        userRepository.save(user);
+        return getUserDetails(user);
     }
 }

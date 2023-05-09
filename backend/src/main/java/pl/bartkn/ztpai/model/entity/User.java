@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
@@ -22,6 +23,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String username;
+    private BigDecimal balance;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> friends = new HashSet<>();

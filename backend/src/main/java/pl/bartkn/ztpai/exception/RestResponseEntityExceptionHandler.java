@@ -17,7 +17,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<Object> handleEmailOrUsernameTakenException (
             RuntimeException ex, WebRequest request
     ) {
-        String body = "Username or email taken";
+        String body;
+        if (ex.getMessage().isEmpty()) {
+            body = "Username or email taken";
+        } else {
+            body = ex.getMessage();
+        }
+
         return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
