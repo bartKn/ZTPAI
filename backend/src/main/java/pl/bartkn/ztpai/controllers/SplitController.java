@@ -2,11 +2,17 @@ package pl.bartkn.ztpai.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.bartkn.ztpai.model.dto.request.UserContribution;
 import pl.bartkn.ztpai.model.dto.request.UserContributionWrapper;
+import pl.bartkn.ztpai.model.dto.response.SplitData;
 import pl.bartkn.ztpai.model.dto.response.SplitResults;
+import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.service.SplitService;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,5 +35,11 @@ public class SplitController {
     @GetMapping("/api/split/result/{splitId}")
     public ResponseEntity<SplitResults> getSplitResult(@PathVariable Long splitId) {
         return ResponseEntity.ok().body(splitService.calculateResult(splitId));
+    }
+
+    @GetMapping("/api/splits")
+    public ResponseEntity<Map<Long, List<SplitData>>> getSplitsOfUser() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok().body(splitService.getSplitDataForUser(user));
     }
 }

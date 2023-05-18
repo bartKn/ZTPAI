@@ -5,13 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pl.bartkn.ztpai.model.dto.request.BalanceUpdate;
+import pl.bartkn.ztpai.model.dto.request.DataUpdate;
 import pl.bartkn.ztpai.model.dto.request.UserId;
 import pl.bartkn.ztpai.model.dto.response.UserAccountDetails;
 import pl.bartkn.ztpai.model.dto.response.UserInfo;
 import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.service.UserService;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,21 +30,17 @@ public class UserController {
     }
 
     @PatchMapping("/api/user/username")
-    public UserAccountDetails updateUsername(@RequestBody String username) {
+    public UserAccountDetails updateUsername(@RequestBody DataUpdate username) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userService.updateUsername(user, username);
-    }
-
-    @PatchMapping("/api/user/email")
-    public UserAccountDetails updateEmail(@RequestBody String email) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userService.updateEmail(user, email);
+        System.out.println("Username update");
+        return userService.updateUsername(user, username.getValue());
     }
 
     @PatchMapping("/api/user/balance")
-    public UserAccountDetails updateUsername(@RequestBody BigDecimal balance) {
+    public UserAccountDetails updateUsername(@RequestBody BalanceUpdate balance) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userService.updateBalance(user, balance);
+        System.out.println("Balance update");
+        return userService.updateBalance(user, balance.getValue());
     }
 
     @GetMapping("/api/users")

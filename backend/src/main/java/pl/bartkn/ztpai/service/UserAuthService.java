@@ -68,10 +68,11 @@ public class UserAuthService {
     }
 
     public void logout(User user) {
-        tokenRepository.deleteByUser(user);
+        tokenRepository.deleteAllByUser(user);
     }
 
     public void delete(User user) {
+        tokenRepository.deleteAllByUser(user);
         userRepository.delete(user);
     }
 }

@@ -39,6 +39,10 @@ public class User implements UserDetails {
         return authorities;
     }
 
+    public String getUsernameValue() {
+        return username;
+    }
+
     @Override
     public String getUsername() {
         return email;

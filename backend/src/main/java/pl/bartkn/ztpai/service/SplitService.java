@@ -3,9 +3,12 @@ package pl.bartkn.ztpai.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.bartkn.ztpai.model.dto.request.UserContribution;
+import pl.bartkn.ztpai.model.dto.response.ISplitData;
+import pl.bartkn.ztpai.model.dto.response.SplitData;
 import pl.bartkn.ztpai.model.dto.response.SplitResults;
 import pl.bartkn.ztpai.model.entity.Split;
 import pl.bartkn.ztpai.model.entity.User;
+import pl.bartkn.ztpai.model.mapper.SplitDataMapper;
 import pl.bartkn.ztpai.repository.SplitRepository;
 import pl.bartkn.ztpai.repository.UserRepository;
 import pl.bartkn.ztpai.util.SplitCalculator;
@@ -14,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,8 @@ public class SplitService {
     private final SplitRepository splitRepository;
     private final UserRepository userRepository;
     private final SplitCalculator splitCalculator;
+
+    private final SplitDataMapper dataMapper;
 
     public void createSplit(List<UserContribution> contributions) {
         Split split = new Split();
@@ -51,5 +57,12 @@ public class SplitService {
     public SplitResults calculateResult(Long splitId) {
         Split split = splitRepository.getReferenceById(splitId);
         return splitCalculator.splitResults(split.getUsersContributions());
+    }
+
+    public Map<Long, List<SplitData>> getSplitDataForUser(User user) {
+        var result = splitRepository.findByUserId(user.getId());
+        return result.stream()
+                .collect(Collectors.groupingBy(ISplitData::getSplitId,
+                        Collectors.mapping(dataMapper::map, Collectors.toList())));
     }
 }

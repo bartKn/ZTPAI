@@ -19,7 +19,7 @@ public class Split {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ElementCollection
+    @ElementCollection()
     @CollectionTable(name = "users_splits_mapping",
         joinColumns = {@JoinColumn(name = "split_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "users")

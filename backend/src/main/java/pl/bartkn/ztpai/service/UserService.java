@@ -56,18 +56,9 @@ public class UserService {
         return UserAccountDetails.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .username(user.getUsername())
+                .username(user.getUsernameValue())
                 .balance(user.getBalance())
                 .build();
-    }
-
-    public UserAccountDetails updateEmail(User user, String email) {
-        if (userRepository.existsByEmail(email)) {
-            throw new EmailOrUsernameTakenException("Email is taken!");
-        }
-        user.setEmail(email);
-        userRepository.save(user);
-        return getUserDetails(user);
     }
 
     public UserAccountDetails updateUsername(User user, String username) {
