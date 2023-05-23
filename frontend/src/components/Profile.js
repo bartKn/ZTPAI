@@ -1,9 +1,10 @@
 import NavBar from "./NavBar";
 import {MDBBtn, MDBCol, MDBInput, MDBRow} from 'mdb-react-ui-kit';
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {AxiosContext} from "../context/AxiosProvider";
 import AuthContext from "../context/AuthProvider";
 import {useNavigate} from "react-router-dom";
+import SplitsTables from "./SplitsTables";
 
 
 const USERNAME_URL = '/user/username';
@@ -16,6 +17,8 @@ const Profile = () => {
     const axios = useContext(AxiosContext);
     const authContext = useContext(AuthContext);
     const navigate = useNavigate();
+
+    const [splits, setSplits] = useState([]);
 
     const [userData, setUserData] = useState({
         username: '',
@@ -37,13 +40,15 @@ const Profile = () => {
                     balance: res.data?.balance
                 })
             });
-        axios.authAxios.get('/splits')
-            .then((res) => {
-                console.log(res?.data);
-            })
+        axios.authAxios.get('/splits/data')
+            .then(res => {
+                console.log(typeof res?.data)
+                console.log(res?.data)
+                setSplits(res?.data)
+            });
     }, [axios.authAxios]);
 
-    
+
     const onChange = (e) => {
         if (e.target.name === 'balance' && !POSITIVE_NUMBER_REGEX.test(e.target.value)) {
             e.preventDefault();
@@ -121,22 +126,7 @@ const Profile = () => {
         <>
             <NavBar />
             <MDBRow className='m-2'>
-                <MDBCol md='6'>
-                    <div className='m-3 p-3 bg-gradient rounded-6 border border-secondary shadow-5' style={{backgroundColor : '#CCD6F6'}}>
-                        <MDBRow className='m-3'>
-                            <MDBCol md='4' className='fs-3 fw-bold'>
-                                Active splits
-                            </MDBCol>
-                        </MDBRow>
-                    </div>
-                    <div className='m-3 p-3 bg-gradient rounded-6 border border-secondary shadow-5' style={{backgroundColor : '#CCD6F6'}}>
-                        <MDBRow className='m-3'>
-                            <MDBCol md='4' className='fs-3 fw-bold'>
-                                Splits history
-                            </MDBCol>
-                        </MDBRow>
-                    </div>
-                </MDBCol>
+                <SplitsTables splits={splits} />
                 <MDBCol md='6'>
                     <div className='m-3 p-3 bg-gradient rounded-6 border border-secondary shadow-5' style={{backgroundColor : '#CCD6F6'}}>
                         <MDBRow className='m-3 fs-3 fw-bold'>
