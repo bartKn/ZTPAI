@@ -3,6 +3,7 @@ package pl.bartkn.ztpai.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import pl.bartkn.ztpai.model.dto.response.ISimpleSplitData;
 import pl.bartkn.ztpai.model.dto.response.ISplitData;
 import pl.bartkn.ztpai.model.entity.Split;
 
@@ -18,4 +19,14 @@ public interface SplitRepository extends JpaRepository<Split, Long> {
             "    FROM users_splits_mapping\n" +
             "    WHERE users_contributions_key = :id)", nativeQuery = true)
     Collection<ISplitData> findByUserId(@Param("id") Long userId);
+
+    @Query(value = "select s.id as splitId, s.finished from users u \n" +
+            "inner join users_splits_mapping usm on u.id = usm.users_contributions_key\n" +
+            "inner join split s on usm.split_id = s.id\n" +
+            "where usm.split_id in (\n" +
+            "select split_id\n" +
+            "from users_splits_mapping usm2\n" +
+            "where usm2.users_contributions_key = :id)\n" +
+            "group by s.id, s.finished;", nativeQuery = true)
+    Collection<ISimpleSplitData> findDataByUserId(@Param("id") Long userId);
 }

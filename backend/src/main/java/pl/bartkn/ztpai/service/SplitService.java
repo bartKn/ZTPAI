@@ -3,9 +3,7 @@ package pl.bartkn.ztpai.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.bartkn.ztpai.model.dto.request.UserContribution;
-import pl.bartkn.ztpai.model.dto.response.ISplitData;
-import pl.bartkn.ztpai.model.dto.response.SplitData;
-import pl.bartkn.ztpai.model.dto.response.SplitResults;
+import pl.bartkn.ztpai.model.dto.response.*;
 import pl.bartkn.ztpai.model.entity.Split;
 import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.model.mapper.SplitDataMapper;
@@ -14,6 +12,7 @@ import pl.bartkn.ztpai.repository.UserRepository;
 import pl.bartkn.ztpai.util.SplitCalculator;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,5 +63,18 @@ public class SplitService {
         return result.stream()
                 .collect(Collectors.groupingBy(ISplitData::getSplitId,
                         Collectors.mapping(dataMapper::map, Collectors.toList())));
+    }
+
+    public List<SimpleSplitData> getSplitData(User user) {
+        var result = splitRepository.findDataByUserId(user.getId());
+        List<SimpleSplitData> results = new ArrayList<>();
+        for (ISimpleSplitData s : result) {
+            results.add(new SimpleSplitData(s.getSplitId(), s.isFinished()));
+        }
+        return results;
+    }
+
+    public void deleteSplit(Long splitId) {
+        splitRepository.deleteById(splitId);
     }
 }

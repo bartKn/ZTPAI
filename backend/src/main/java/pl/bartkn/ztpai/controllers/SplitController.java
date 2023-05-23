@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.bartkn.ztpai.model.dto.request.UserContribution;
 import pl.bartkn.ztpai.model.dto.request.UserContributionWrapper;
+import pl.bartkn.ztpai.model.dto.response.SimpleSplitData;
 import pl.bartkn.ztpai.model.dto.response.SplitData;
 import pl.bartkn.ztpai.model.dto.response.SplitResults;
 import pl.bartkn.ztpai.model.entity.User;
@@ -41,5 +42,16 @@ public class SplitController {
     public ResponseEntity<Map<Long, List<SplitData>>> getSplitsOfUser() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok().body(splitService.getSplitDataForUser(user));
+    }
+
+    @GetMapping("/api/splits/data")
+    public ResponseEntity<List<SimpleSplitData>> getSimpleSplitData() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok().body(splitService.getSplitData(user));
+    }
+
+    @DeleteMapping("/api/splits/delete/{splitId}")
+    public void deleteSplitById(@PathVariable Long splitId) {
+        splitService.deleteSplit(splitId);
     }
 }
