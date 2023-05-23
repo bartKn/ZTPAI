@@ -18,42 +18,43 @@ import java.util.Optional;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/api/user/details")
+    @GetMapping("/details")
     public UserAccountDetails getUserDetails() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userService.getUserDetails(user);
     }
 
-    @PatchMapping("/api/user/username")
+    @PatchMapping("/username")
     public UserAccountDetails updateUsername(@RequestBody DataUpdate username) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println("Username update");
         return userService.updateUsername(user, username.getValue());
     }
 
-    @PatchMapping("/api/user/balance")
+    @PatchMapping("/balance")
     public UserAccountDetails updateUsername(@RequestBody BalanceUpdate balance) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println("Balance update");
         return userService.updateBalance(user, balance.getValue());
     }
 
-    @GetMapping("/api/users")
+    @GetMapping("/all")
     public List<UserInfo> getUsers(@RequestParam Optional<String> username) {
         return userService.getAllUsers(username);
     }
 
-    @GetMapping("/api/users/{username}")
+    @GetMapping("/{username}")
     public User getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
 
-    @GetMapping("/api/users/friends")
+    @GetMapping("/friends")
     public Set<User> getFriends() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userService.findUserFriends(email);
