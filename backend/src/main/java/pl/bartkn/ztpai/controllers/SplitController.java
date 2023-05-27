@@ -8,6 +8,7 @@ import pl.bartkn.ztpai.model.dto.request.UserContribution;
 import pl.bartkn.ztpai.model.dto.request.UserContributionWrapper;
 import pl.bartkn.ztpai.model.dto.response.SimpleSplitData;
 import pl.bartkn.ztpai.model.dto.response.SplitData;
+import pl.bartkn.ztpai.model.dto.response.SplitDetails;
 import pl.bartkn.ztpai.model.dto.response.SplitResults;
 import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.service.SplitService;
@@ -37,6 +38,12 @@ public class SplitController {
     @GetMapping("/result/{splitId}")
     public ResponseEntity<SplitResults> getSplitResult(@PathVariable Long splitId) {
         return ResponseEntity.ok().body(splitService.calculateResult(splitId));
+    }
+
+    @GetMapping("/{splitId}")
+    public ResponseEntity<SplitDetails> getSplitById(@PathVariable Long splitId) {
+        System.out.println("Get data about split with id: " + splitId);
+        return ResponseEntity.ok().body(splitService.getSplit(splitId));
     }
 
     @GetMapping("/all")

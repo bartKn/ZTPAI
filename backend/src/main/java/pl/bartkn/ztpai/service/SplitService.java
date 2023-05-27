@@ -42,6 +42,20 @@ public class SplitService {
         splitRepository.save(split);
     }
 
+    public SplitDetails getSplit(Long splitId) {
+        Split s = splitRepository.getReferenceById(splitId);
+        return SplitDetails.builder()
+                .splitId(s.getId())
+                .finished(s.isFinished())
+                .contributions(s.getUsersContributions().entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(
+                                e -> e.getKey().getUsername(),
+                                Map.Entry::getValue
+                        )))
+                .build();
+    }
+
     public void addUserToSplit(UserContribution userContribution, Long splitId) {
         var split = splitRepository.getReferenceById(splitId);
         split.getUsersContributions()
