@@ -7,8 +7,8 @@ import {useNavigate} from "react-router-dom";
 import SplitsTables from "./SplitsTables";
 
 
-const USERNAME_URL = '/user/username';
-const BALANCE_URL = '/user/balance';
+const USERNAME_URL = '/users/username';
+const BALANCE_URL = '/users/balance';
 const DELETE_URL = '/auth/delete';
 const POSITIVE_NUMBER_REGEX = /^(?:\d*[1-9]\d*)?$/;
 
@@ -33,7 +33,7 @@ const Profile = () => {
     const[errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
-        axios.authAxios.get('/user/details')
+        axios.authAxios.get('/users/details')
             .then((res) => {
                 setUserData({
                     username: res.data.username,
