@@ -5,11 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.bartkn.ztpai.model.dto.request.UserContribution;
-import pl.bartkn.ztpai.model.dto.request.UserContributionWrapper;
-import pl.bartkn.ztpai.model.dto.response.SimpleSplitData;
-import pl.bartkn.ztpai.model.dto.response.SplitData;
-import pl.bartkn.ztpai.model.dto.response.SplitDetails;
-import pl.bartkn.ztpai.model.dto.response.SplitResults;
+import pl.bartkn.ztpai.model.dto.request.UserIdList;
+import pl.bartkn.ztpai.model.dto.response.split.SimpleSplitData;
+import pl.bartkn.ztpai.model.dto.response.split.SplitData;
+import pl.bartkn.ztpai.model.dto.response.split.SplitDetails;
+import pl.bartkn.ztpai.model.dto.response.split.SplitResults;
 import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.service.SplitService;
 
@@ -24,10 +24,10 @@ public class SplitController {
     private final SplitService splitService;
 
     @PostMapping("/new")
-    public ResponseEntity<?> createSplit(@RequestBody UserContributionWrapper userContributions) {
-        System.out.println(userContributions);
-        splitService.createSplit(userContributions.getUserContribution());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Long> createSplit(@RequestBody UserIdList usersIds) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long creatorId = user.getId();
+        return ResponseEntity.ok().body(splitService.createSplit(usersIds.getUserIds(), creatorId));
     }
 
     @PostMapping("/addUser")

@@ -1,4 +1,4 @@
-package pl.bartkn.ztpai.model.dto.response;
+package pl.bartkn.ztpai.model.dto.response.split;
 
 public interface ISimpleSplitData {
     Long getSplitId();

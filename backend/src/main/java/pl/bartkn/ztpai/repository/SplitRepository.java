@@ -3,8 +3,8 @@ package pl.bartkn.ztpai.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import pl.bartkn.ztpai.model.dto.response.ISimpleSplitData;
-import pl.bartkn.ztpai.model.dto.response.ISplitData;
+import pl.bartkn.ztpai.model.dto.response.split.ISimpleSplitData;
+import pl.bartkn.ztpai.model.dto.response.split.ISplitData;
 import pl.bartkn.ztpai.model.entity.Split;
 
 import java.util.Collection;

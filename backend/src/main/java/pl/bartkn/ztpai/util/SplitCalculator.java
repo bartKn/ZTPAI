@@ -2,8 +2,8 @@ package pl.bartkn.ztpai.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.bartkn.ztpai.model.dto.response.SplitResult;
-import pl.bartkn.ztpai.model.dto.response.SplitResults;
+import pl.bartkn.ztpai.model.dto.response.split.SplitResult;
+import pl.bartkn.ztpai.model.dto.response.split.SplitResults;
 import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.model.mapper.UserMapper;
 

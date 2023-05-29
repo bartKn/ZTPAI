@@ -1,4 +1,4 @@
-package pl.bartkn.ztpai.model.dto.response;
+package pl.bartkn.ztpai.model.dto.response.split;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

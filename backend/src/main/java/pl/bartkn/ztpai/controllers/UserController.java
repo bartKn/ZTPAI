@@ -8,14 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import pl.bartkn.ztpai.model.dto.request.BalanceUpdate;
 import pl.bartkn.ztpai.model.dto.request.DataUpdate;
 import pl.bartkn.ztpai.model.dto.request.UserId;
-import pl.bartkn.ztpai.model.dto.response.UserAccountDetails;
-import pl.bartkn.ztpai.model.dto.response.UserInfo;
+import pl.bartkn.ztpai.model.dto.response.user.UserAccountDetails;
+import pl.bartkn.ztpai.model.dto.response.user.UserInfo;
 import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -55,12 +54,12 @@ public class UserController {
     }
 
     @GetMapping("/friends")
-    public Set<User> getFriends() {
+    public List<UserInfo> getFriends() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userService.findUserFriends(email);
     }
 
-    @PostMapping("/api/users/friends/add")
+    @PostMapping("/friends/add")
     public ResponseEntity<?> addFriend(@RequestBody @Valid UserId id) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.addFriend(email, id.getId());

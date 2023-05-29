@@ -3,7 +3,7 @@ package pl.bartkn.ztpai.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.bartkn.ztpai.model.dto.request.UserContribution;
-import pl.bartkn.ztpai.model.dto.response.*;
+import pl.bartkn.ztpai.model.dto.response.split.*;
 import pl.bartkn.ztpai.model.entity.Split;
 import pl.bartkn.ztpai.model.entity.User;
 import pl.bartkn.ztpai.model.mapper.SplitDataMapper;
@@ -27,19 +27,23 @@ public class SplitService {
 
     private final SplitDataMapper dataMapper;
 
-    public void createSplit(List<UserContribution> contributions) {
+    public Long createSplit(List<Long> userIds, Long creatorId) {
         Split split = new Split();
         Map<User, BigDecimal> usersContributions = new HashMap<>();
-        for (UserContribution contribution : contributions) {
+        usersContributions.put(
+                userRepository.getReferenceById(creatorId),
+                BigDecimal.ZERO);
+        for (Long userId : userIds) {
             usersContributions.put(
-                    userRepository.getReferenceById(contribution.getUserId()),
-                    contribution.getContribution()
+                    userRepository.getReferenceById(userId),
+                    BigDecimal.ZERO
             );
         }
 
         split.setUsersContributions(usersContributions);
         split.setFinished(false);
         splitRepository.save(split);
+        return split.getId();
     }
 
     public SplitDetails getSplit(Long splitId) {

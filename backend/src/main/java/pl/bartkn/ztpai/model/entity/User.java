@@ -1,9 +1,7 @@
 package pl.bartkn.ztpai.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,9 +22,6 @@ public class User implements UserDetails {
     private String password;
     private String username;
     private BigDecimal balance;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<User> friends = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
