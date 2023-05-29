@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {AxiosContext} from "../../context/AxiosProvider";
 import {useNavigate} from "react-router-dom";
 
-const SplitsTables = ({splits}) => {
+const SplitsTables = ({splits, owner}) => {
 
     const axios = useContext(AxiosContext);
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ const SplitsTables = ({splits}) => {
 
     const navigateToSplit = (e, splitId) => {
         e.preventDefault();
-        navigate('/main/'.concat(splitId));
+        navigate('/split/'.concat(splitId), {state: {user: owner}});
     }
 
     return (

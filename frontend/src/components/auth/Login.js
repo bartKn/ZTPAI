@@ -6,8 +6,8 @@ import {
     MDBInput
 }
     from 'mdb-react-ui-kit';
-import axios from "../api/axios";
-import useAuth from "../hooks/useAuth";
+import axios from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
 
 
 const LOGIN_URL = '/auth/login';

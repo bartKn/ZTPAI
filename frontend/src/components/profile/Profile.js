@@ -22,7 +22,8 @@ const Profile = () => {
 
     const [userData, setUserData] = useState({
         username: '',
-        balance: 0.0
+        balance: 0.0,
+        id: 0
     });
 
     const[formValue, setFormValue] = useState({
@@ -36,8 +37,9 @@ const Profile = () => {
         axios.authAxios.get('/users/details')
             .then((res) => {
                 setUserData({
-                    username: res.data.username,
-                    balance: res.data?.balance
+                    username: res?.data?.username,
+                    balance: res?.data?.balance,
+                    id: res?.data?.id
                 })
             });
         axios.authAxios.get('/splits/data')
@@ -124,7 +126,7 @@ const Profile = () => {
         <>
             <NavBar />
             <MDBRow className='m-2'>
-                <SplitsTables splits={splits} />
+                <SplitsTables splits={splits} owner={userData.id}/>
                 <MDBCol md='6'>
                     <div className='m-3 p-3 bg-gradient rounded-6 border border-secondary shadow-5' style={{backgroundColor : '#CCD6F6'}}>
                         <MDBRow className='m-3 fs-3 fw-bold'>

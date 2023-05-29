@@ -1,12 +1,13 @@
 import {Routes, Route} from "react-router-dom";
-import RequireAuth from "./components/RequireAuth";
+import RequireAuth from "./components/auth/RequireAuth";
 import Layout from "./components/Layout";
 import Profile from "./components/profile/Profile";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Main from "./components/Main";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import Main from "./components/main/Main";
 import Friends from "./components/friends/Friends";
 import Unauthorized from "./components/Unauthorized";
+import Split from "./components/main/Split";
 
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
        <Routes>
            <Route path="/" element={<Layout />}>
                <Route path="/" element={<Main />} />
-               <Route path="main/*" element={<Main />} />
+               <Route path="split/*" element={<Split />} />
                <Route path="login" element={<Login />} />
                <Route path="register" element={<Register />} />
                <Route path="unauthorized" element={<Unauthorized />} />

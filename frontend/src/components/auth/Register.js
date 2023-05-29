@@ -7,7 +7,7 @@ import {
     MDBCheckbox
 }
     from 'mdb-react-ui-kit';
-import axios from "../api/axios";
+import axios from "../../api/axios";
 
 const REGISTER_URL = '/register';
 
