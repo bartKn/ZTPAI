@@ -1,6 +1,6 @@
 import {MDBBtn, MDBCol, MDBIcon, MDBListGroup, MDBListGroupItem, MDBRow} from "mdb-react-ui-kit";
 import React, {useContext, useEffect, useState} from "react";
-import {AxiosContext} from "../context/AxiosProvider";
+import {AxiosContext} from "../../context/AxiosProvider";
 import {useNavigate} from "react-router-dom";
 
 const SplitsTables = ({splits}) => {
@@ -23,7 +23,7 @@ const SplitsTables = ({splits}) => {
 
     const navigateToSplit = (e, splitId) => {
         e.preventDefault();
-        navigate('/main/'.concat(splitId), { replace: true });
+        navigate('/main/'.concat(splitId));
     }
 
     return (

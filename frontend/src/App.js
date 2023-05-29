@@ -1,11 +1,11 @@
 import {Routes, Route} from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import Layout from "./components/Layout";
-import Profile from "./components/Profile";
+import Profile from "./components/profile/Profile";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Main from "./components/Main";
-import Friends from "./components/Friends";
+import Friends from "./components/friends/Friends";
 import Unauthorized from "./components/Unauthorized";
 
 

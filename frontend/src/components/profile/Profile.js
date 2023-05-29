@@ -1,8 +1,8 @@
-import NavBar from "./NavBar";
+import NavBar from "../NavBar";
 import {MDBBtn, MDBCol, MDBInput, MDBRow} from 'mdb-react-ui-kit';
 import React, {useContext, useEffect, useState} from "react";
-import {AxiosContext} from "../context/AxiosProvider";
-import AuthContext from "../context/AuthProvider";
+import {AxiosContext} from "../../context/AxiosProvider";
+import AuthContext from "../../context/AuthProvider";
 import {useNavigate} from "react-router-dom";
 import SplitsTables from "./SplitsTables";
 
@@ -42,8 +42,6 @@ const Profile = () => {
             });
         axios.authAxios.get('/splits/data')
             .then(res => {
-                console.log(typeof res?.data)
-                console.log(res?.data)
                 setSplits(res?.data)
             });
     }, [axios.authAxios]);
