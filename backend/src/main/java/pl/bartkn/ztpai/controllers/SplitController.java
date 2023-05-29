@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pl.bartkn.ztpai.model.dto.request.SplitCalcRequestList;
 import pl.bartkn.ztpai.model.dto.request.UserContribution;
 import pl.bartkn.ztpai.model.dto.request.UserIdList;
 import pl.bartkn.ztpai.model.dto.response.split.SimpleSplitData;
@@ -61,5 +62,11 @@ public class SplitController {
     @DeleteMapping("/delete/{splitId}")
     public void deleteSplitById(@PathVariable Long splitId) {
         splitService.deleteSplit(splitId);
+    }
+
+    @PostMapping("/calculate")
+    public SplitResults calculateResults(@RequestBody SplitCalcRequestList splitData) {
+        System.out.println(splitData);
+        return splitService.handleCalculateRequest(splitData);
     }
 }

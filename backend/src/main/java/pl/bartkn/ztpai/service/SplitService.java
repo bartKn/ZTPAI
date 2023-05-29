@@ -2,6 +2,8 @@ package pl.bartkn.ztpai.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.bartkn.ztpai.model.dto.request.SplitCalcRequest;
+import pl.bartkn.ztpai.model.dto.request.SplitCalcRequestList;
 import pl.bartkn.ztpai.model.dto.request.UserContribution;
 import pl.bartkn.ztpai.model.dto.response.split.*;
 import pl.bartkn.ztpai.model.entity.Split;
@@ -94,5 +96,20 @@ public class SplitService {
 
     public void deleteSplit(Long splitId) {
         splitRepository.deleteById(splitId);
+    }
+
+    public SplitResults handleCalculateRequest(SplitCalcRequestList splitData) {
+        Map<User, BigDecimal> contributions = new HashMap<>();
+        for (SplitCalcRequest request : splitData.getSplitDataList()) {
+            contributions.put(
+                    User.builder()
+                            .id(request.getId())
+                            .username(request.getUsername())
+                            .email(request.getUsername())
+                            .build(),
+                    request.getBalance()
+            );
+        }
+        return splitCalculator.splitResults(contributions);
     }
 }
