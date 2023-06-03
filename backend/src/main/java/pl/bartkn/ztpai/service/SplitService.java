@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.bartkn.ztpai.model.dto.request.SplitCalcRequest;
 import pl.bartkn.ztpai.model.dto.request.SplitCalcRequestList;
-import pl.bartkn.ztpai.model.dto.request.UserContribution;
+import pl.bartkn.ztpai.model.dto.request.UserContributionUpdate;
 import pl.bartkn.ztpai.model.dto.response.split.*;
 import pl.bartkn.ztpai.model.entity.Split;
 import pl.bartkn.ztpai.model.entity.User;
@@ -34,11 +34,11 @@ public class SplitService {
         Map<User, BigDecimal> usersContributions = new HashMap<>();
         usersContributions.put(
                 userRepository.getReferenceById(creatorId),
-                BigDecimal.ZERO);
+                BigDecimal.valueOf(-1));
         for (Long userId : userIds) {
             usersContributions.put(
                     userRepository.getReferenceById(userId),
-                    BigDecimal.ZERO
+                    BigDecimal.valueOf(-1)
             );
         }
 
@@ -62,15 +62,15 @@ public class SplitService {
                 .build();
     }
 
-    public void addUserToSplit(UserContribution userContribution, Long splitId) {
-        var split = splitRepository.getReferenceById(splitId);
+    public void updateUserContribution(UserContributionUpdate userContributionUpdate) {
+        var split = splitRepository.getReferenceById(userContributionUpdate.getSplitId());
         split.getUsersContributions()
                 .put(
-                        userRepository.getReferenceById(userContribution.getUserId()),
-                        userContribution.getContribution()
+                        userRepository.getUserByEmail(userContributionUpdate.getEmail()),
+                        userContributionUpdate.getContribution()
                 );
         splitRepository.save(split);
-
+        tryToCalculate(split);
     }
 
     public SplitResults calculateResult(Long splitId) {
@@ -111,5 +111,29 @@ public class SplitService {
             );
         }
         return splitCalculator.splitResults(contributions);
+    }
+
+    private void tryToCalculate(Split split) {
+        boolean isReadyToCalculate = split.getUsersContributions()
+                .values().stream()
+                .allMatch(x -> x.compareTo(BigDecimal.valueOf(-1)) > 0);
+        if (isReadyToCalculate) {
+            split.setFinished(true);
+            splitRepository.save(split);
+            resolveSplit(split.getId());
+        }
+    }
+
+    private void resolveSplit(Long splitId) {
+        SplitResults results = calculateResult(splitId);
+        for (SplitResult result : results.getResults()) {
+            User from = userRepository.getReferenceById(result.getFrom().getId());
+            User to = userRepository.getReferenceById(result.getFrom().getId());
+            BigDecimal amount = result.getAmount();
+            from.setBalance(from.getBalance().subtract(amount));
+            userRepository.save(from);
+            to.setBalance(to.getBalance().add(amount));
+            userRepository.save(to);
+        }
     }
 }

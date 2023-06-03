@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.bartkn.ztpai.model.dto.request.SplitCalcRequestList;
-import pl.bartkn.ztpai.model.dto.request.UserContribution;
+import pl.bartkn.ztpai.model.dto.request.UserContributionUpdate;
 import pl.bartkn.ztpai.model.dto.request.UserIdList;
 import pl.bartkn.ztpai.model.dto.response.split.SimpleSplitData;
 import pl.bartkn.ztpai.model.dto.response.split.SplitData;
@@ -31,9 +31,9 @@ public class SplitController {
         return ResponseEntity.ok().body(splitService.createSplit(usersIds.getUserIds(), creatorId));
     }
 
-    @PostMapping("/addUser")
-    public void addToSplit(UserContribution userContribution, Long splitId) {
-        splitService.addUserToSplit(userContribution, splitId);
+    @PostMapping("/update")
+    public void addToSplit(@RequestBody UserContributionUpdate userContribution) {
+        splitService.updateUserContribution(userContribution);
     }
 
     @GetMapping("/result/{splitId}")
@@ -43,7 +43,6 @@ public class SplitController {
 
     @GetMapping("/{splitId}")
     public ResponseEntity<SplitDetails> getSplitById(@PathVariable Long splitId) {
-        System.out.println("Get data about split with id: " + splitId);
         return ResponseEntity.ok().body(splitService.getSplit(splitId));
     }
 
@@ -66,7 +65,6 @@ public class SplitController {
 
     @PostMapping("/calculate")
     public SplitResults calculateResults(@RequestBody SplitCalcRequestList splitData) {
-        System.out.println(splitData);
         return splitService.handleCalculateRequest(splitData);
     }
 }
