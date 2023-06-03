@@ -1,5 +1,5 @@
 import NavBar from "../NavBar";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import {MDBBtn, MDBCol, MDBInput, MDBRow} from "mdb-react-ui-kit";
 import {AxiosContext} from "../../context/AxiosProvider";
 

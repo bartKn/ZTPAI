@@ -22,6 +22,7 @@ const Profile = () => {
 
     const [userData, setUserData] = useState({
         username: '',
+        email: '',
         balance: 0.0,
         id: 0
     });
@@ -38,6 +39,7 @@ const Profile = () => {
             .then((res) => {
                 setUserData({
                     username: res?.data?.username,
+                    email: res?.data?.email,
                     balance: res?.data?.balance,
                     id: res?.data?.id
                 })
@@ -126,7 +128,7 @@ const Profile = () => {
         <>
             <NavBar />
             <MDBRow className='m-2'>
-                <SplitsTables splits={splits} owner={userData.id}/>
+                <SplitsTables splits={splits} owner={userData.email}/>
                 <MDBCol md='6'>
                     <div className='m-3 p-3 bg-gradient rounded-6 border border-secondary shadow-5' style={{backgroundColor : '#CCD6F6'}}>
                         <MDBRow className='m-3 fs-3 fw-bold'>

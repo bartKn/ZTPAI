@@ -1,7 +1,7 @@
 import NavBar from "../NavBar";
 import {MDBRow} from "mdb-react-ui-kit";
 import FriendsList from "./FriendsList";
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {AxiosContext} from "../../context/AxiosProvider";
 import AddFriends from "./AddFriends";
 
@@ -12,7 +12,7 @@ const Friends = () => {
     const axios = useContext(AxiosContext);
 
     const [fetchedFriends, setFetchedFriends] = useState([]);
-    useRef();
+
     useEffect(() => {
         axios.authAxios.get(FRIENDS_URL)
             .then(res => {

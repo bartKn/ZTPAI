@@ -63,6 +63,9 @@ const SplitsTables = ({splits, owner}) => {
                                 <MDBListGroupItem className='d-flex justify-content-between align-items-center rounded-5 w-75'>
                                     <MDBIcon icon="dollar" size="2x" className='m-2' />
                                     <p className='fs-5 fw-bolder m-auto'>Split ID: {item.splitId}</p>
+                                    <MDBBtn className='m-1' onClick={(e) => navigateToSplit(e, item.splitId)}>
+                                        View
+                                    </MDBBtn>
                                     <MDBBtn className='m-1 btn-danger' onClick={(e) => handleDelete(e, item.splitId)}>
                                         Delete
                                     </MDBBtn>

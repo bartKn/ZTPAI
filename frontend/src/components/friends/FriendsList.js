@@ -42,10 +42,10 @@ const FriendsList = ({friendsList}) => {
                    headers: {'Content-Type': 'application/json'},
                    withCredentials: true
                }).then(response => {
-                   navigate('/main/'.concat(response?.data));
+                   navigate('/profile');
            })
         } catch (err) {
-
+            console.log(err);
         }
     }
 
