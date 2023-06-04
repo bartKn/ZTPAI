@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {AxiosContext} from "../../context/AxiosProvider";
-import AuthContext from "../../context/AuthProvider";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {MDBBtn, MDBCol, MDBInput, MDBRow} from "mdb-react-ui-kit";
 import NavBar from "../NavBar";
 import SplitResults from "./SplitResults";
@@ -15,8 +14,6 @@ const SPLIT_UPDATE_URL = '/splits/update';
 const Split = () => {
 
     const axios = useContext(AxiosContext);
-    const authContext = useContext(AuthContext);
-    const navigate = useNavigate();
     const location = useLocation();
 
     const owner = location.state?.user || '';

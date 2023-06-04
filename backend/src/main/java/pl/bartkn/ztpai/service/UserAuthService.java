@@ -18,7 +18,9 @@ import pl.bartkn.ztpai.repository.TokenRepository;
 import pl.bartkn.ztpai.repository.UserRepository;
 import pl.bartkn.ztpai.security.jwt.JwtService;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -63,7 +65,8 @@ public class UserAuthService {
         User user = userMapper.map(registerRequest);
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         Role userRole = roleRepository.findByName("ROLE_USER");
-        user.getRoles().add(userRole);
+        user.setRoles(new ArrayList<>(Arrays.asList(userRole)));
+        user.setBalance(BigDecimal.ZERO);
         userRepository.save(user);
     }
 
