@@ -1,4 +1,13 @@
-FROM openjdk:17
-ADD target/bill-split-api.jar bill-split-api.jar
-ENTRYPOINT ["java", "-jar", "bill-split-api.jar"]
+FROM eclipse-temurin:17-jdk-focal
+
+WORKDIR /app
+
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+
+COPY src ./src
+
+CMD ["./mvnw", "spring-boot:run"]
+
 EXPOSE 8080
