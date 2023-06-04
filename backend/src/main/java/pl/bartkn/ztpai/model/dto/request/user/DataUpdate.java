@@ -1,4 +1,4 @@
-package pl.bartkn.ztpai.model.dto.request;
+package pl.bartkn.ztpai.model.dto.request.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LoginRequest {
-    protected String email;
-    protected String password;
+public class DataUpdate {
+    private String value;
 }

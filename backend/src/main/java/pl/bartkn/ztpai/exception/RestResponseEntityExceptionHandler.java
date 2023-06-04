@@ -46,7 +46,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(value =
-            {ExpiredJwtException.class})
+            {ExpiredJwtException.class, TokenExpiredException.class})
     protected ResponseEntity<Object> handleExpiredTokenException (
             RuntimeException ex, WebRequest request
     ) {

@@ -1,4 +1,4 @@
-package pl.bartkn.ztpai.model.dto.request;
+package pl.bartkn.ztpai.model.dto.request.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DataUpdate {
-    private String value;
+public class RefreshRequest {
+    private String token;
 }

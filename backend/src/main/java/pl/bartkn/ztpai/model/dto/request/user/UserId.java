@@ -1,4 +1,4 @@
-package pl.bartkn.ztpai.model.dto.request;
+package pl.bartkn.ztpai.model.dto.request.user;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

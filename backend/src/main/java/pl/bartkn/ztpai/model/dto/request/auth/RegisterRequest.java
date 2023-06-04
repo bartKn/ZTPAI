@@ -1,4 +1,4 @@
-package pl.bartkn.ztpai.model.dto.request;
+package pl.bartkn.ztpai.model.dto.request.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

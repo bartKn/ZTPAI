@@ -2,7 +2,7 @@ package pl.bartkn.ztpai.model.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import pl.bartkn.ztpai.model.dto.request.RegisterRequest;
+import pl.bartkn.ztpai.model.dto.request.auth.RegisterRequest;
 import pl.bartkn.ztpai.model.dto.response.user.UserInfo;
 import pl.bartkn.ztpai.model.entity.User;
 

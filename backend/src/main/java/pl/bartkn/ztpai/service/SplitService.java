@@ -2,9 +2,9 @@ package pl.bartkn.ztpai.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.bartkn.ztpai.model.dto.request.SplitCalcRequest;
-import pl.bartkn.ztpai.model.dto.request.SplitCalcRequestList;
-import pl.bartkn.ztpai.model.dto.request.UserContributionUpdate;
+import pl.bartkn.ztpai.model.dto.request.split.SplitCalcRequest;
+import pl.bartkn.ztpai.model.dto.request.split.SplitCalcRequestList;
+import pl.bartkn.ztpai.model.dto.request.split.UserContributionUpdate;
 import pl.bartkn.ztpai.model.dto.response.split.*;
 import pl.bartkn.ztpai.model.entity.Split;
 import pl.bartkn.ztpai.model.entity.User;

@@ -1,16 +1,15 @@
-package pl.bartkn.ztpai.model.dto.request;
+package pl.bartkn.ztpai.model.dto.request.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class BalanceUpdate {
-    private BigDecimal value;
+public class LoginRequest {
+    protected String email;
+    protected String password;
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.bartkn.ztpai.model.dto.request.auth.RefreshRequest;
 import pl.bartkn.ztpai.model.dto.response.RefreshResponse;
 import pl.bartkn.ztpai.service.TokenService;
 
@@ -17,8 +18,7 @@ public class TokenController {
     private final TokenService tokenService;
 
     @PostMapping("/refresh")
-    public ResponseEntity<RefreshResponse> refreshToken(@RequestBody String refreshToken) {
-        System.out.println("Refreshing");
-        return ResponseEntity.ok().body(tokenService.refresh(refreshToken));
+    public ResponseEntity<RefreshResponse> refreshToken(@RequestBody RefreshRequest request) {
+        return ResponseEntity.ok().body(tokenService.refresh(request.getToken()));
     }
 }

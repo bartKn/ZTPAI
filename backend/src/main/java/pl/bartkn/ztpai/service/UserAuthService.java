@@ -6,8 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.bartkn.ztpai.exception.EmailOrUsernameTakenException;
-import pl.bartkn.ztpai.model.dto.request.LoginRequest;
-import pl.bartkn.ztpai.model.dto.request.RegisterRequest;
+import pl.bartkn.ztpai.model.dto.request.auth.LoginRequest;
+import pl.bartkn.ztpai.model.dto.request.auth.RegisterRequest;
 import pl.bartkn.ztpai.model.dto.response.AuthResponse;
 import pl.bartkn.ztpai.model.entity.RefreshToken;
 import pl.bartkn.ztpai.model.entity.Role;
